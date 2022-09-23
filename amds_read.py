@@ -72,7 +72,7 @@ while True:
         # 1行目をファイルに書き込み
         nwe.close
         # ファイルを閉じる
-        hdk == list[0]
+        hdk = list[0]
         # 今回の日付を記録
 
 
