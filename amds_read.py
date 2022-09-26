@@ -66,6 +66,9 @@ while True:
 
             if list[1] != lastjkn:
                 lastjkn = write_line()
+            
+            sleep(60)
+            # 1分間待機
 
         except Exception:
             pass
@@ -75,6 +78,4 @@ while True:
     else:
         newfile()
 
-    sleep(60)
-    # 1分間待機
     # 以下無限ループ
