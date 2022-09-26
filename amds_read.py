@@ -8,28 +8,19 @@ def json2list():
     # URLを指定
     text = url.text
     # jsonをテキストファイルにして返す
-    result = []
-    try:
-        data = json.loads(text)
-        result.append(data['info'])
-        # jsonをdictとして読み込み
-        kion = data['temp']
-        uryou = data['precipitation10m']
-        fuuko = data['windDirection']
-        fuusoku = data['wind']
-        jikan = data['dataTime']
-        # 各値を代入
+    data = json.loads(text)
+    # jsonをdictとして読み込み
+    kion = data['temp']
+    uryou = data['precipitation10m']
+    fuuko = data['windDirection']
+    fuusoku = data['wind']
+    jikan = data['dataTime']
+    # 各値を代入
     
-        list = [jikan[0][:10], jikan[0][11:16], kion[0], uryou[0], fuuko[0], fuusoku[0]]
-        # 代入された値からdictを作成
-
-    except Exception:
-        pass
-        # エラーが出た場合はスキップ
-        # ※アメダスデータの更新時間と重なると500 Errorとなる場合がある
-    
+    list = [jikan[0][:10], jikan[0][11:16], kion[0], uryou[0], fuuko[0], fuusoku[0]]
+    # 代入された値からdictを作成
     return list
-    # listの値を返す(エラーの場合は前回の値)
+    # listの値を返す
 
 def time_set():
 # 現在時刻を取得
@@ -68,19 +59,25 @@ hdk = time_set_()
 
 while True:
     if os.path.isfile('log/_data.json'):
-        flname = time_set()
+        try:
+            flname = time_set()
 
-        list = json2list()
+            list = json2list()
 
-        if list[0] != hdk:
-        # 日付が前回と変わっていた場合
-            filename = filename - 1
-            # 昨日の日付にするため-1する
-            os.rename('log/_data.json', 'log/' + flname + '.json')
-            # ファイル名を日付に変更
+            if list[0] != hdk:
+            # 日付が前回と変わっていた場合
+                filename = filename - 1
+                # 昨日の日付にするため-1する
+                os.rename('log/_data.json', 'log/' + flname + '.json')
+                # ファイル名を日付に変更
 
-        if list[1] != lastjkn:
-            lastjkn = write_line()
+            if list[1] != lastjkn:
+                lastjkn = write_line()
+
+        except Exception:
+            pass
+            # エラーが出た場合はスキップ
+            # ※アメダスデータの更新時間と重なると500 Errorとなる場合がある
 
     else:
         newfile()
