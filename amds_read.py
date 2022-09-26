@@ -2,49 +2,12 @@ import requests, json, ndjson, datetime, os
 from time import sleep
 # moduleをインポート
 
-url = requests.get("https://weather-nkkmd.herokuapp.com/amds?point=69101")
-# URLを指定
-text = url.text
-# jsonをテキストファイルに
-
-data = json.loads(text)
-# jsonを配列として読み込み
-kion = data['temp']
-uryou = data['precipitation10m']
-fuuko = data['windDirection']
-fuusoku = data['wind']
-jikan = data['dataTime']
-# 各値を代入
-    
-list = [jikan[0][:10], jikan[0][11:16], kion[0], uryou[0], fuuko[0], fuusoku[0]]
-# 代入された値から配列を作成
-hdk = list[0]
-# 日付を記録
-lastjkn = list[1]
-# 時刻を記録
-
-dt_now = datetime.datetime.now()
-# PC設定から現在時刻を取得
-flname = dt_now.strftime('%Y%m%d')
-# ファイル名用に日付を代入
-
-nwe = open('log/' + flname + '.json', 'w')
-# 新しいファイルを作成
-json.dump(list, nwe)
-# 1行目をファイルに書き込み
-nwe.close
-# ファイルを閉じる
-
-while True:
-    dt_now = datetime.datetime.now()
-    # PC設定から現在時刻を取得
-    flname = dt_now.strftime('%Y%m%d')
-    # ファイル名用に日付を代入
-
+def json2list():
+# URLからjsonを取得してlistに格納
     url = requests.get("https://weather-nkkmd.herokuapp.com/amds?point=69101")
     # URLを指定
     text = url.text
-    # jsonをテキストファイルに
+    # jsonをテキストファイルにして返す
     result = []
     try:
         data = json.loads(text)
@@ -62,29 +25,62 @@ while True:
     # 各値を代入
     
     list = [jikan[0][:10], jikan[0][11:16], kion[0], uryou[0], fuuko[0], fuusoku[0]]
-    # 代入された値からdictを作成
+    return list
+    # 代入された値からdictを作成して返す
 
-    if list[0] != hdk:
-    # 日付が前回と変わっていた場合
-        nwe = open('log/' + flname + '.json', 'w')
-        # 新しいファイルを作成
-        json.dump(list, nwe)
-        # 1行目をファイルに書き込み
-        nwe.close
-        # ファイルを閉じる
-        hdk = list[0]
-        # 今回の日付を記録
+def time_set():
+# 現在時刻を取得
+    dt_now = datetime.datetime.now()
+    # PC設定から現在時刻を取得
+    return(dt_now.strftime('%Y%m%d'))
+    # ファイル名用に日付を代入
 
+def time_set_():
+# 現在時刻を取得
+    dt_now = datetime.datetime.now()
+    # PC設定から現在時刻を取得
+    return(dt_now.strftime('%Y/%m/%d'))
+    # 基準時刻設定用に日付を代入
 
-    if list[1] != lastjkn:
-    # 時間が前回と変わっていた場合
-        with open('log/' + flname + '.json', 'a') as f:
+def write_line():
+    with open('log/_data.json', 'a') as f:
         # 書き込み先ファイルを開く
             writer = ndjson.writer(f)
             writer.writerow(list)
             # ファイルに書き込む 
-            lastjkn = list[1]
-            # 今回の時間を記録
+            return(list[1])
+            # 今回の時間を返す
+
+def newfile():
+# 新しいファイルを作成
+    new = open('log/_data.json', 'w')
+    # 新しいファイルを作成
+    new.close
+    # ファイルを閉じる
+
+lastjkn = "00:01"
+# 最終更新時刻を初期値を仮設定
+hdk = time_set_()
+# 最終更新日付の初期値を仮設定
+
+while True:
+    if os.path.isfile('log/_data.json'):
+        flname = time_set()
+
+        list = json2list()
+
+        if list[0] != hdk:
+        # 日付が前回と変わっていた場合
+            filename = filename - 1
+            # 昨日の日付にするため-1する
+            os.rename('log/_data.json', 'log/' + flname + '.json')
+            # ファイル名を日付に変更
+
+        if list[1] != lastjkn:
+            lastjkn = write_line()
+
+    else:
+        newfile()
 
     sleep(60)
     # 1分間待機
