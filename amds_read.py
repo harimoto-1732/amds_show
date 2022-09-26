@@ -29,13 +29,6 @@ def time_set():
     return(dt_now.strftime('%Y%m%d'))
     # ファイル名用に日付を代入
 
-def time_set_():
-# 現在時刻を取得
-    dt_now = datetime.datetime.now()
-    # PC設定から現在時刻を取得
-    return(dt_now.strftime('%Y/%m/%d'))
-    # 基準時刻設定用に日付を代入
-
 def write_line():
     with open('log/_data.json', 'a') as f:
         # 書き込み先ファイルを開く
@@ -52,10 +45,10 @@ def newfile():
     new.close
     # ファイルを閉じる
 
-lastjkn = "00:01"
-# 最終更新時刻を初期値を仮設定
-hdk = time_set_()
-# 最終更新日付の初期値を仮設定
+lastjkn = "99:99"
+# 時刻の初期値を設定
+hdk = "9999/99/99"
+# 日付の初期値を設定
 
 while True:
     if os.path.isfile('log/_data.json'):
