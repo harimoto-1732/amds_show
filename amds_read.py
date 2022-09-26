@@ -13,20 +13,23 @@ def json2list():
         data = json.loads(text)
         result.append(data['info'])
         # jsonをdictとして読み込み
+        kion = data['temp']
+        uryou = data['precipitation10m']
+        fuuko = data['windDirection']
+        fuusoku = data['wind']
+        jikan = data['dataTime']
+        # 各値を代入
+    
+        list = [jikan[0][:10], jikan[0][11:16], kion[0], uryou[0], fuuko[0], fuusoku[0]]
+        # 代入された値からdictを作成
+
     except Exception:
         pass
         # エラーが出た場合はスキップ
-        # ※アメダスデータの更新時間と重なると500 Errorとなる
-    kion = data['temp']
-    uryou = data['precipitation10m']
-    fuuko = data['windDirection']
-    fuusoku = data['wind']
-    jikan = data['dataTime']
-    # 各値を代入
+        # ※アメダスデータの更新時間と重なると500 Errorとなる場合がある
     
-    list = [jikan[0][:10], jikan[0][11:16], kion[0], uryou[0], fuuko[0], fuusoku[0]]
     return list
-    # 代入された値からdictを作成して返す
+    # listの値を返す(エラーの場合は前回の値)
 
 def time_set():
 # 現在時刻を取得
