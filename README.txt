@@ -8,4 +8,4 @@ The log file name is in yyyymmdd format.
 
 Create a new json file when the date changes.
 
-*Requires "requests" and "ndjson" modules.
+You need to install "requests" and "ndjson".
