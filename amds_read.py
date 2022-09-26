@@ -39,11 +39,11 @@ def time_set_():
 def write_line():
     with open('log/_data.json', 'a') as f:
         # 書き込み先ファイルを開く
-            writer = ndjson.writer(f)
-            writer.writerow(list)
-            # ファイルに書き込む 
-            return(list[1])
-            # 今回の時間を返す
+        writer = ndjson.writer(f)
+        writer.writerow(list)
+        # ファイルに書き込む 
+        return(list[1])
+        # 今回の時間を返す
 
 def newfile():
 # 新しいファイルを作成
