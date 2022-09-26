@@ -1,4 +1,4 @@
-import requests, json, ndjson, datetime
+import requests, json, ndjson, datetime, os
 from time import sleep
 # moduleをインポート
 
