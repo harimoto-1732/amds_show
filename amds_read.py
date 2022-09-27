@@ -44,6 +44,8 @@ def newfile():
     new.close
     # ファイルを閉じる
 
+URL = "https://weather-nkkmd.herokuapp.com/amds?point=69101"
+
 lastjkn = "99:99"
 # 時刻の初期値を設定
 hdk = "9999/99/99"
@@ -54,7 +56,8 @@ while True:
         try:
             flname = time_set()
 
-            list = json2list()
+            data = json_get()
+            list = json2list(data)
 
             if list[0] != hdk:
             # 日付が前回と変わっていた場合
