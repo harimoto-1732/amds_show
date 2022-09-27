@@ -2,14 +2,13 @@ import requests, json, ndjson, datetime, os
 from time import sleep
 # moduleをインポート
 
-def json2list():
-# URLからjsonを取得してlistに格納
-    url = requests.get("https://weather-nkkmd.herokuapp.com/amds?point=69101")
-    # URLを指定
-    text = url.text
-    # jsonをテキストファイルにして返す
-    data = json.loads(text)
-    # jsonをdictとして読み込み
+def json_get():
+    # URLからjsonを取得
+    return (json.loads(requests.get(URL).text))
+    # jsonをtextに変換しdictとして読み込み
+    
+def json2list(data):
+    # jsonから必要な値を取り出しlistに格納
     kion = data['temp']
     uryou = data['precipitation10m']
     fuuko = data['windDirection']
