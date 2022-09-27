@@ -2,11 +2,13 @@ import requests, json, ndjson, datetime, os
 from time import sleep
 # moduleをインポート
 
+
 def json_get():
     # URLからjsonを取得
     return (json.loads(requests.get(URL).text))
     # jsonをtextに変換しdictとして読み込み
-    
+
+
 def json2list(data):
     # jsonから必要な値を取り出しlistに格納
     kion = data['temp']
@@ -15,7 +17,7 @@ def json2list(data):
     fuusoku = data['wind']
     jikan = data['dataTime']
     # 各値を代入
-    
+
     list = [jikan[0][:10], jikan[0][11:16], kion[0], uryou[0], fuuko[0], fuusoku[0]]
     # 代入された値からdictを作成
     return list
@@ -100,4 +102,4 @@ while True:
         sleep(60)
         # 1分間待機
 
-    # 以下無限ループ
+# 以下無限ループ
