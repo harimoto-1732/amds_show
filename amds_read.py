@@ -37,13 +37,6 @@ def write_line():
         return(list[1])
         # 今回の時間を返す
 
-def newfile():
-# 新しいファイルを作成
-    new = open('log/_data.json', 'w')
-    # 新しいファイルを作成
-    new.close
-    # ファイルを閉じる
-
 URL = "https://weather-nkkmd.herokuapp.com/amds?point=69101"
 
 lastjkn = "99:99"
@@ -52,32 +45,28 @@ hdk = "9999/99/99"
 # 日付の初期値を設定
 
 while True:
-    if os.path.isfile('log/_data.json'):
-        try:
-            flname = time_set()
+    try:
+        flname = time_set()
 
-            data = json_get()
-            list = json2list(data)
+        data = json_get()
+        list = json2list(data)
 
-            if list[0] != hdk:
-            # 日付が前回と変わっていた場合
-                filename = filename - 1
-                # 昨日の日付にするため-1する
-                os.rename('log/_data.json', 'log/' + flname + '.json')
-                # ファイル名を日付に変更
+        if list[0] != hdk:
+        # 日付が前回と変わっていた場合
+        filename = filename - 1
+        # 昨日の日付にするため-1する
+        os.rename('log/_data.json', 'log/' + flname + '.json')
+        # ファイル名を日付に変更
 
-            if list[1] != lastjkn:
-                lastjkn = write_line()
-            
-            sleep(60)
-            # 1分間待機
+        if list[1] != lastjkn:
+        lastjkn = write_line()
+        
+        sleep(60)
+        # 1分間待機
 
-        except Exception:
-            pass
-            # エラーが出た場合はスキップ
-            # ※アメダスデータの更新時間と重なると500 Errorとなる場合がある
-
-    else:
-        newfile()
+    except Exception:
+        pass
+        # エラーが出た場合はスキップ
+        # ※アメダスデータの更新時間と重なると500 Errorとなる場合がある
 
     # 以下無限ループ
