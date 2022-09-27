@@ -41,7 +41,7 @@ URL = "https://weather-nkkmd.herokuapp.com/amds?point=69101"
 
 lastjkn = "99:99"
 # 時刻の初期値を設定
-hdk = "9999/99/99"
+hdk = datetime.datetime.now().strftime('%Y/%m/%d')
 # 日付の初期値を設定
 
 while True:
