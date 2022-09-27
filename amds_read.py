@@ -46,27 +46,58 @@ hdk = "9999/99/99"
 
 while True:
     try:
-        flname = time_set()
-
+        # エラーを検知
         data = json_get()
         list = json2list(data)
-
-        if list[0] != hdk:
-        # 日付が前回と変わっていた場合
-        filename = filename - 1
-        # 昨日の日付にするため-1する
-        os.rename('log/_data.json', 'log/' + flname + '.json')
-        # ファイル名を日付に変更
-
-        if list[1] != lastjkn:
-        lastjkn = write_line()
-        
-        sleep(60)
-        # 1分間待機
+        # URLからjsonを取得し、listに格納
 
     except Exception:
-        pass
-        # エラーが出た場合はスキップ
+        # エラーが出た場合
         # ※アメダスデータの更新時間と重なると500 Errorとなる場合がある
+        i = 0
+        # カウンターの初期値設定
+        while i < 6:
+            # 5回再試行
+            sleep(1)
+            # 10秒間待機
+            try:
+                data = json_get()
+                list = json2list(data)
+                # 再試行
+
+            except Exception:
+                i += 1
+                if i >= 5:
+                    list = [hdk, time_set()[8:12] + '0', 'Missing data']
+                    # 5回全てエラーの場合、欠測を表示
+
+                else:
+                    pass
+                    # エラーが出た場合は一度tryを抜けてループに戻る
+
+            else:
+                break
+                # エラーが出なくなればループを抜けてそのまま進行
+
+    if list[0] != hdk:
+        # 日付が前回と変わっていた場合
+        flname = time_set()[:8]
+        # ファイル名用に現在時刻から日付を取得
+        flname = str(int(flname) - 1)
+        # 昨日の日付にするため-1する、concatするため文字型に変換
+        os.rename('log/_data.json', 'log/' + flname + '.json')
+        # ファイル名を日付に変更
+        hdk = list[0]
+        # 今回の日付をhdkに代入
+
+    if list[1] != lastjkn:
+        # 時間が前回と変わっていた場合
+        write_line(list)
+        # データを新しい行に記録
+        lastjkn = list[1]
+        # 今回の時間をlastjknに代入
+
+        sleep(60)
+        # 1分間待機
 
     # 以下無限ループ
