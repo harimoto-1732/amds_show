@@ -60,7 +60,7 @@ while True:
         # カウンターの初期値設定
         while i < 6:
             # 5回再試行
-            sleep(1)
+            sleep(10)
             # 10秒間待機
             try:
                 data = json_get()
