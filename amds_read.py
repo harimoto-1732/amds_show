@@ -70,7 +70,7 @@ while True:
             except Exception:
                 i += 1
                 if i >= 4:
-                    list = ['Error!', hdk, 'problem occured:' + time_set()[8:], 'Missing data']
+                    list = [hdk, 'problem occured:' + time_set()[8:], 'Missing data']
                     # 5回全てエラーの場合、欠測を表示
 
                 else:
