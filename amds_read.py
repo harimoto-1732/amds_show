@@ -23,21 +23,22 @@ def json2list(data):
     return list
     # listの値を返す
 
-def time_set():
-# 現在時刻を取得
+
+    def time_set():
+    # 現在時刻を取得
     dt_now = datetime.datetime.now()
     # PC設定から現在時刻を取得
-    return(dt_now.strftime('%Y%m%d'))
+    return (dt_now.strftime('%Y%m%d%H:%M'))
     # ファイル名用に日付を代入
 
-def write_line():
+
+    def write_line(list):
     with open('log/_data.json', 'a') as f:
         # 書き込み先ファイルを開く
         writer = ndjson.writer(f)
         writer.writerow(list)
         # ファイルに書き込む 
-        return(list[1])
-        # 今回の時間を返す
+
 
 URL = "https://weather-nkkmd.herokuapp.com/amds?point=69101"
 
@@ -55,13 +56,13 @@ while True:
 
     except Exception:
         # エラーが出た場合
-        # ※アメダスデータの更新時間と重なると500 Errorとなる場合がある
+        # ※"hh:00"と重なると高確率で500 Errorとなる
         i = 0
         # カウンターの初期値設定
         while i < 5:
             # 5回再試行
-            sleep(60)
-            # 1分間待機
+            sleep(30)
+            # 30秒待機
             try:
                 data = json_get()
                 list = json2list(data)
@@ -79,7 +80,7 @@ while True:
 
             else:
                 break
-                # エラーが出なくなればループを抜けてそのまま進行
+                # エラーが出なくなればループを抜けてそのまま続行
 
     if list[0] != hdk:
         # 日付が前回と変わっていた場合
@@ -99,7 +100,7 @@ while True:
         lastjkn = list[1]
         # 今回の時間をlastjknに代入
 
-        sleep(60)
-        # 1分間待機
+    sleep(60)
+    # 1分間待機
 
 # 以下無限ループ
