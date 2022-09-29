@@ -40,7 +40,7 @@ def json2list(data):
         # ファイルに書き込む 
 
 
-URL = "https://api.cultivationdata.net/amds?point="
+URL = "https://api.cultivationdata.net/amds?point=69101"
 # jsonを取得するURL
 
 lastjkn = "99:99"
