@@ -32,7 +32,7 @@ def time_set():
     # ファイル名用に日付を代入
 
 
-def write_line(list):
+def write_line(list, FILENAME):
     with open(FILENAME, 'a') as f:
         # 書き込み先ファイルを開く
         writer = ndjson.writer(f)
@@ -111,7 +111,7 @@ while True:
 
     if list[1] != lastjkn:
         # 時間が前回と変わっていた場合
-        write_line(list)
+        write_line(list, FILENAME)
         # データを新しい行に記録
         lastjkn = list[1]
         # 今回の時間をlastjknに代入
