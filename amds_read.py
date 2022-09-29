@@ -40,7 +40,8 @@ def json2list(data):
         # ファイルに書き込む 
 
 
-URL = "https://weather-nkkmd.herokuapp.com/amds?point=69101"
+URL = "https://api.cultivationdata.net/amds?point="
+# jsonを取得するURL
 
 lastjkn = "99:99"
 # 時刻の初期値を設定
