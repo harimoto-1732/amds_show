@@ -24,7 +24,7 @@ def json2list(data):
     # listの値を返す
 
 
-    def time_set():
+def time_set():
     # 現在時刻を取得
     dt_now = datetime.datetime.now()
     # PC設定から現在時刻を取得
@@ -32,7 +32,7 @@ def json2list(data):
     # ファイル名用に日付を代入
 
 
-    def write_line(list):
+def write_line(list):
     with open(FILENAME, 'a') as f:
         # 書き込み先ファイルを開く
         writer = ndjson.writer(f)
