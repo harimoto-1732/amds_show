@@ -106,8 +106,8 @@ while True:
             os.rename(FILENAME, './log/' + flname + '.json')
             # ファイル名を"yyyymmdd"に変更
 
-    hdk = list[0]
-    # 今回の日付をhdkに代入
+        hdk = list[0]
+        # 今回の日付をhdkに代入
 
     if list[1] != lastjkn:
         # 時間が前回と変わっていた場合
