@@ -33,7 +33,7 @@ def json2list(data):
 
 
     def write_line(list):
-    with open('log/_data.json', 'a') as f:
+    with open(FILENAME, 'a') as f:
         # 書き込み先ファイルを開く
         writer = ndjson.writer(f)
         writer.writerow(list)
@@ -42,6 +42,9 @@ def json2list(data):
 
 URL = "https://api.cultivationdata.net/amds?point=69101"
 # jsonを取得するURL
+
+FILENAME = './log/_data.json'
+# デフォルトのファイル名
 
 lastjkn = "99:99"
 # 時刻の初期値を設定
@@ -89,7 +92,7 @@ while True:
         # ファイル名用に現在時刻から日付を取得
         flname = str(int(flname) - 1)
         # 昨日の日付にするため-1する、concatするため文字型に変換
-        os.rename('log/_data.json', 'log/' + flname + '.json')
+        os.rename(FILENAME, 'log/' + flname + '.json')
         # ファイル名を日付に変更
         hdk = list[0]
         # 今回の日付をhdkに代入
