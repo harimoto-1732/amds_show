@@ -3,7 +3,7 @@ from time import sleep
 # moduleをインポート
 
 
-def json_get():
+def json_get(URL):
     # URLからjsonを取得
     return (json.loads(requests.get(URL).text))
     # jsonをtextに変換しdictとして読み込み
