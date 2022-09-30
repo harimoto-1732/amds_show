@@ -46,10 +46,25 @@ URL = "https://api.cultivationdata.net/amds?point=69101"
 FILENAME = './log/_data.json'
 # デフォルトのファイル名
 
-lastjkn = "99:99"
-# 時刻の初期値を設定
-hdk = datetime.datetime.now().strftime('%Y/%m/%d')
-# 日付の初期値を設定
+if os.path.exists(FILENAME):
+    # "_data"が存在するか
+    with open(FILENAME, 'r') as ld:
+        # "_data"を開く
+        lines = ld.readlines()
+        # 1行ずつ読み込む
+        lstd = [item for item in lines[:lines.count('\n')+1]]
+        # 最下行のデータを取り出す
+        lastjkn = lstd[18:23]
+        # 最後のデータから時刻を取得
+        hdk = lstd[4:14]
+        # 最後のデータから日付を取得
+
+else:
+    # 存在しなければ初期値を与える
+    lastjkn = "99:99"
+    # 時刻の初期値を設定
+    hdk = datetime.datetime.now().strftime('%Y/%m/%d')
+    # 日付の初期値を設定
 
 l = 0
 # ファイル名に番号を追加
