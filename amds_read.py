@@ -66,9 +66,6 @@ else:
     hdk = datetime.datetime.now().strftime('%Y/%m/%d')
     # 日付の初期値を設定
 
-l = 0
-# ファイル名に番号を追加
-
 while True:
     try:
         # エラーを検知
@@ -110,17 +107,8 @@ while True:
         # ファイル名用に現在時刻から日付を取得
         flname = str(int(flname) - 1)
         # 昨日の日付にするため-1する、concatするため文字型に変換
-        if os.path.exists('./log/' + flname + '.json') or os.path.exists('./log/' + flname + '_' + l + '.json'):
-            # 既にファイルが存在している場合
-            l += 1
-            # 番号に1追加
-            os.rename(FILENAME, './log/' + flname + '_' + l + '.json')
-            # ファイル名を"yyyymmdd_"に変更
-
-        else:
-            os.rename(FILENAME, './log/' + flname + '.json')
-            # ファイル名を"yyyymmdd"に変更
-
+        os.rename(FILENAME, './log/' + flname + '.json')
+        # ファイル名を"yyyymmdd"に変更
         hdk = list[0]
         # 今回の日付をhdkに代入
 
