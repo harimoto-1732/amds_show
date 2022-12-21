@@ -1,6 +1,6 @@
 This is an experimental program.
 
-Get AMeDAS data from "https://weather-nkkmd.herokuapp.com/amds?point=69101".
+Get AMeDAS data from JMA API.
 
 Logs are saved in json format.
 
@@ -10,4 +10,6 @@ And save the archive data with the name yyyymmdd.
 
 Create a new json file when the date changes.
 
-You need to install "requests" and "ndjson".
+Convert the generated data to an html table.
+
+You need to install "requests" and "ndjson" and "pandas".
