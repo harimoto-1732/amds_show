@@ -51,10 +51,10 @@ def time_now():
         if len(str(dt_M)) == 1:
         #  monthを-1した際に1桁になる場合"0"を追加
             dt_M = "0" + str(dt_M)
-        if int(dt_Y) / 400 == 0 and dt_M == "2":
+        if int(dt_Y) % 400 == 0 and dt_M == "2":
         # うるう年の判定(1)
             dt_D = 29
-        elif int(dt_Y) / 4 == 0 and int(dt_Y) / 100 != 0 and dt_M == "2":
+        elif int(dt_Y) % 4 == 0 and int(dt_Y) % 100 != 0 and dt_M == "2":
         # うるう年の判定(2)
             dt_D = 29
         elif dt_M == 1 or dt_M == 3 or dt_M == 5 or dt_M == 7 or dt_M == 8 or dt_M == 10 or dt_M == 12:
