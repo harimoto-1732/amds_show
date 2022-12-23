@@ -131,39 +131,38 @@ else:
     hdk = datetime.datetime.now().strftime('%Y/%m/%d')
     # 日付の初期値を設定
 
-while True:
-    dtime = time_now()
-    # 時間を取得
-    URL = "https://www.jma.go.jp/bosai/amedas/data/map/" + str(dtime) + "00.json"
-    # 取得した時間をもとにjsonを取得するURLを設定
-    dtime_d = dtime[:4] + "/" + dtime[4:6] + "/" + dtime[6:8]
-    # dateを取り出す
-    dtime_t = dtime[8:10] + ":" + dtime[10:]
-    # timeを取り出す
+dtime = time_now()
+# 時間を取得
+URL = "https://www.jma.go.jp/bosai/amedas/data/map/" + str(dtime) + "00.json"
+# 取得した時間をもとにjsonを取得するURLを設定
+dtime_d = dtime[:4] + "/" + dtime[4:6] + "/" + dtime[6:8]
+# dateを取り出す
+dtime_t = dtime[8:10] + ":" + dtime[10:]
+# timeを取り出す
 
-    try:
-        # エラーを検知
-        data = json_get()
-        # URLからjsonを取得し、倉吉市のデータを取り出す
-        list = json2list(data, dtime_d, dtime_t)
-        # 取得したjsonの必要な値をlistに格納
+try:
+    # エラーを検知
+    data = json_get()
+    # URLからjsonを取得し、倉吉市のデータを取り出す
+    list = json2list(data, dtime_d, dtime_t)
+    # 取得したjsonの必要な値をlistに格納
 
-    except Exception:
-        # エラーが出た場合
-        # ※データ更新(hh:m2前後)よりも早くアクセスすると404 Errorとなる
-        # ※更新までに10分程度要することがあったため、最大10分+1回再試行する
-        i = 0
-        # カウンターの初期値設定
-        while i < 21:
-            # 21回再試行
-            sleep(30)
-            # 30秒待機
-            try:
-                data = json_get(URL)
-                list = json2list(data, dtime_d, dtime_t)
-                # 再試行
+except Exception:
+    # エラーが出た場合
+    # ※データ更新(hh:m2前後)よりも早くアクセスすると404 Errorとなる
+    # ※更新までに10分程度要することがあったため、最大10分+1回再試行する
+    i = 0
+    # カウンターの初期値設定
+    while i < 21:
+        # 21回再試行
+        sleep(30)
+        # 30秒待機
+        try:
+            data = json_get(URL)
+            list = json2list(data, dtime_d, dtime_t)
+            # 再試行
 
-            except Exception:
+        except Exception:
                 i += 1
                 if i >= 20:
                     now = get_time()
@@ -178,16 +177,16 @@ while True:
                 break
                 # エラーが出なくなればループを抜けてそのまま続行
 
-    if list[0][0:10] != hdk:
-        # 日付が前回と変わっていた場合
-        flname = re.sub(r"\D", "", hdk)
-        # 前回記録された日付(もしくは"_data"の最後の日付)から記号(/)を削除
-        os.rename(FILENAME, './log/' + flname + '.json')
-        # ファイル名を"yyyymmdd"に変更
-        hdk = list[0][0:10]
-        # 今回の日付をhdkに代入
+if list[0][0:10] != hdk:
+    # 日付が前回と変わっていた場合
+    flname = re.sub(r"\D", "", hdk)
+    # 前回記録された日付(もしくは"_data"の最後の日付)から記号(/)を削除
+    os.rename(FILENAME, './log/' + flname + '.json')
+    # ファイル名を"yyyymmdd"に変更
+    hdk = list[0][0:10]
+    # 今回の日付をhdkに代入
 
-    elif list[0][11:16] != lastjkn:
+elif list[0][11:16] != lastjkn:
         # 時間が前回と変わっていた場合
         write_line(list, FILENAME)
         # データを新しい行に記録
@@ -200,5 +199,3 @@ while True:
 
     sleep(60)
     # 1分間待機
-
-# 以下無限ループ
