@@ -163,19 +163,19 @@ except Exception:
             # 再試行
 
         except Exception:
-                i += 1
-                if i >= 20:
-                    now = get_time()
-                    list = [dtime_d + ' ' + dtime_t, 'Error!>>' + now[8:], 'Missing data']
-                    # 21回全てエラーの場合、欠測を表示
-
-                else:
-                    pass
-                    # 21回未満の場合は一度tryを抜けてループに戻る
+            i += 1
+            if i >= 20:
+                now = get_time()
+                list = [dtime_d + ' ' + dtime_t, 'Error!>>' + now[8:], 'Missing data']
+                # 21回全てエラーの場合、欠測を表示
 
             else:
-                break
-                # エラーが出なくなればループを抜けてそのまま続行
+                pass
+                # 21回未満の場合は一度tryを抜けてループに戻る
+
+        else:
+            break
+            # エラーが出なくなればループを抜けてそのまま続行
 
 if list[0][0:10] != hdk:
     # 日付が前回と変わっていた場合
@@ -187,15 +187,17 @@ if list[0][0:10] != hdk:
     # 今回の日付をhdkに代入
 
 elif list[0][11:16] != lastjkn:
-        # 時間が前回と変わっていた場合
-        write_line(list, FILENAME)
-        # データを新しい行に記録
-        lastjkn = list[0][11:16]
-        # 今回の時間をlastjknに代入
+    # 時間が前回と変わっていた場合
+    write_line(list, FILENAME)
+    # データを新しい行に記録
+    lastjkn = list[0][11:16]
+    # 今回の時間をlastjknに代入
+    import json2table
+    # 生成したjsonをhtmlに変換
     
-    else:
-        # 変わっていなければ何もしない
-        pass
+else:
+    # 変わっていなければ何もしない
+    pass
 
-    sleep(60)
-    # 1分間待機
+sleep(60)
+# 1分間待機
