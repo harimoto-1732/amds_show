@@ -97,7 +97,7 @@ def write_line(list, FILENAME):
         # ファイルに書き込む 
 
 
-FILENAME = './log/_data.json'
+FILENAME = '/var/www/html/data/scp/log/_data.json'
 # デフォルトのファイル名
 
 if os.path.exists(FILENAME):
