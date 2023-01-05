@@ -1,7 +1,8 @@
 import pandas as pd
 # moduleをインポート
 
-file = "./log/_data.json"
+file = "/var/www/html/data/scp/log/_data.json"
+html = "/var/www/html/data/scp/log/index.html"
 # ファイルディレクトリを指定
 
 df = pd.read_json(file, lines=True)
@@ -14,7 +15,7 @@ df.set_axis(["日時", "気温(℃)", "降水(mm)", "風向(16方位)", "風速(
 result = df.to_html(justify='center', index=False).replace('<td>', '<td align="right">')
 # 処理後のjsonをhtmlテーブルに変換/1行目を中央揃え/データを右揃え
 
-with open("./log/index.html", "w") as out:
+with open(html, "w") as out:
 # htmlを書き込みモードで開く/存在しない場合は新たに作る
     out.write(result)
     # htmlテーブルに変換したresultを書き込み
