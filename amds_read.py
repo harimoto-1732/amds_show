@@ -99,6 +99,7 @@ def write_line(list, FILENAME):
 
 FILENAME = '/var/www/html/data/scp/log/_data.json'
 # デフォルトのファイル名
+logdir = '/var/www/html/data/scp/log/'
 
 if os.path.exists(FILENAME):
     # "_data"が存在するか
@@ -181,7 +182,7 @@ if list[0][0:10] != hdk:
     # 日付が前回と変わっていた場合
     flname = re.sub(r"\D", "", hdk)
     # 前回記録された日付(もしくは"_data"の最後の日付)から記号(/)を削除
-    os.rename(FILENAME, './log/' + flname + '.json')
+    os.rename(FILENAME, logdir + flname + '.json')
     # ファイル名を"yyyymmdd"に変更
     hdk = list[0][0:10]
     # 今回の日付をhdkに代入
