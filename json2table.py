@@ -15,10 +15,13 @@ df.set_axis(["日時", "気温(℃)", "降水(mm)", "風向(16方位)", "風速(
 result = df.to_html(justify='center', index=False).replace('<td>', '<td align="right">')
 # 処理後のjsonをhtmlテーブルに変換/1行目を中央揃え/データを右揃え
 
-result = '<head>\n  <meta charset="UTF-8">\n  <meta http-equiv="refresh" content="60">\n</head>\n' + result
-# 文字コードを"UTF-8"で指定し、60秒(1分)ごとに再読み込みさせる
+result = result.replace("\n", "\n  ")
+# 改行の後にインデントを挿入
 
-with open(html, "w") as out:
+result = '<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset="UTF-8">\n    <meta http-equiv="refresh" content="60">\n    <title>[倉吉市]アメダス履歴</title>\n  </head>\n  ' + result + "\n</html>"
+# htmlタグを追加、文字コードを"UTF-8"で指定し、60秒(1分)ごとに再読み込みさせる
+
+with open(html, "w", encoding="UTF-8") as out:
 # htmlを書き込みモードで開く/存在しない場合は新たに作る
     out.write(result)
     # htmlテーブルに変換したresultを書き込み
