@@ -187,7 +187,11 @@ if list[0][0:10] != hdk:
     hdk = list[0][0:10]
     # 今回の日付をhdkに代入
 
-elif list[0][11:16] != lastjkn:
+else:
+    # 変わっていなければ何もしない
+    pass
+
+if list[0][11:16] != lastjkn:
     # 時間が前回と変わっていた場合
     write_line(list, FILENAME)
     # データを新しい行に記録
