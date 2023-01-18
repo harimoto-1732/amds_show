@@ -3,17 +3,14 @@ from time import sleep
 # moduleをインポート
 
 
-def json_get(URL):
-    # URLからjsonを取得
+def json2list(URL, dtime_d, dtime_t):
+    # URLからjsonを取得し、必要な値を取り出してlistに格納
     alldata = json.loads(requests.get(URL).text)
     # jsonをtextに変換しdictとして読み込み
-    return alldata['69101']
-    # 倉吉市のデータを参照し、returnで返す
-
-
-def json2list(data, dtime_d, dtime_t):
-    # jsonから必要な値を取り出しlistに格納
+    data = alldata['69101']
+    # 倉吉市のデータを参照し、dataに格納
     list = [dtime_d + ' ' + dtime_t, data["temp"][0], data["precipitation10m"][0], data["windDirection"][0], data["wind"][0]]
+    # 必要な値を取り出しlistに格納
     return list
     # listの値を返す
 
@@ -109,21 +106,21 @@ if os.path.exists(FILENAME):
         # 1行ずつ配列へ代入
         lg = len(lines)
         # 配列の要素数を求める
-        if lg == 0:
-            # 中が空の場合は初期値を与える
-            lastjkn = '99:99'
-            # 時刻の初期値を設定
-            hdk = datetime.datetime.now().strftime('%Y/%m/%d')
-            # 日付の初期値を設定
+    if lg < 1:
+        # 中が空の場合は初期値を与える
+        lastjkn = '99:99'
+        # 時刻の初期値を設定
+        hdk = datetime.datetime.now().strftime('%Y/%m/%d')
+        # 日付の初期値を設定
 
-        else:
-            # 中にデータが入っていればそれを参照する
-            lstd = lines[lg - 1].strip()
-            # 配列の最後のデータを抽出/0から始まるため-1
-            lastjkn = lstd[13:18]
-            # 最後のデータから時刻を取得
-            hdk = lstd[2:12]
-            # 最後のデータから日付を取得
+    else:
+        # 中にデータが入っていればそれを参照する
+        lstd = lines[lg - 1].strip()
+        # 配列の最後のデータを抽出/0から始まるため-1
+        lastjkn = lstd[13:18]
+        # 最後のデータから時刻を取得
+        hdk = lstd[2:12]
+        # 最後のデータから日付を取得
         
 else:
     # 存在しなければ初期値を与える
@@ -141,42 +138,31 @@ dtime_d = dtime[:4] + "/" + dtime[4:6] + "/" + dtime[6:8]
 dtime_t = dtime[8:10] + ":" + dtime[10:]
 # timeを取り出す
 
-try:
-    # エラーを検知
-    data = json_get()
-    # URLからjsonを取得し、倉吉市のデータを取り出す
-    list = json2list(data, dtime_d, dtime_t)
-    # 取得したjsonの必要な値をlistに格納
+# 【エラー処理】
+# ※データ更新(hh:m2前後)よりも早くアクセスすると404 Errorとなる
+# ※更新までに10分程度要することがあったため、最大10分+1回再試行する
+i = 0
+# カウンターの初期値設定
+while i < 21:
+# 最大21回再試行
+    try:
+        list = json2list(data, dtime_d, dtime_t)
+        # URLからjsonを取得。倉吉市のデータを取り出し、取得したjsonの必要な値をlistに格納
 
-except Exception:
-    # エラーが出た場合
-    # ※データ更新(hh:m2前後)よりも早くアクセスすると404 Errorとなる
-    # ※更新までに10分程度要することがあったため、最大10分+1回再試行する
-    i = 0
-    # カウンターの初期値設定
-    while i < 21:
-        # 21回再試行
-        sleep(30)
-        # 30秒待機
-        try:
-            data = json_get(URL)
-            list = json2list(data, dtime_d, dtime_t)
-            # 再試行
-
-        except Exception:
-            i += 1
-            if i >= 20:
-                now = get_time()
-                list = [dtime_d + ' ' + dtime_t, 'Error!>>' + now[8:], 'Missing data']
-                # 21回全てエラーの場合、欠測を表示
-
-            else:
-                pass
-                # 21回未満の場合は一度tryを抜けてループに戻る
+    except Exception:
+        i += 1
+        if i >= 20:
+            now = get_time()
+            list = [dtime_d + ' ' + dtime_t, 'Error!>>' + now[8:], 'Missing data']
+            # 21回全てエラーの場合、欠測を表示
 
         else:
-            break
-            # エラーが出なくなればループを抜けてそのまま続行
+            pass
+            # 21回未満の場合は一度tryを抜けてループに戻る
+
+    else:
+        break
+        # エラーが出なくなればループを抜けて続行
 
 if list[0][0:10] != hdk:
     # 日付が前回と変わっていた場合
@@ -203,6 +189,3 @@ if list[0][11:16] != lastjkn:
 else:
     # 変わっていなければ何もしない
     pass
-
-sleep(60)
-# 1分間待機
