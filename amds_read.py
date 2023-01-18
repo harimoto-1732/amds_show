@@ -148,7 +148,7 @@ while i < 21:
 # 最大21回再試行
     try:
     # エラーを検知
-        list = json2list(data, dtime_d, dtime_t)
+        list = json2list(URL, dtime_d, dtime_t)
         # URLからjsonを取得。倉吉市のデータを取り出し、取得したjsonの必要な値をlistに格納
 
     except Exception:
