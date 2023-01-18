@@ -12,13 +12,13 @@ df.replace({3: {0: '北', 1: '北北東', 2: '北東', 3: '東北東', 4: '東',
 df.set_axis(["日時", "気温(℃)", "降水(mm)", "風向(16方位)", "風速(m/s)"], axis=1, inplace=True)
 # 列タイトルを追加
 
-result = df.to_html(justify='center', index=False).replace('<td>', '<td align="right">')
+result = df.to_html(justify='center', index=False).replace('<tbody>', '<tbody align="right">')
 # 処理後のjsonをhtmlテーブルに変換/1行目を中央揃え/データを右揃え
 
 result = result.replace("\n", "\n  ")
 # 改行の後にインデントを挿入
 
-result = '<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset="UTF-8">\n    <meta http-equiv="refresh" content="60">\n    <title>[倉吉市]アメダス履歴</title>\n  </head>\n  ' + result + "\n</html>"
+result = '<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset="UTF-8">\n    <meta http-equiv="refresh" content="60">\n    <title>[倉吉市]アメダス履歴</title>\n    <link rel="stylesheet" href="stylesheet.css">\n  </head>\n    <a href="https://www.jma.go.jp/bosai/amedas/#amdno=69101&area_type=offices&area_code=310000&format=table10min&elems=53400">Quote:気象庁</a>\n  ' + result + '\n  <body>\n</html>'
 # htmlタグを追加、文字コードを"UTF-8"で指定し、60秒(1分)ごとに再読み込みさせる
 
 with open(html, "w", encoding="UTF-8") as out:
