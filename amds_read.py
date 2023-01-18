@@ -15,10 +15,10 @@ def json2list(URL, dtime_d, dtime_t):
     # listの値を返す
 
 
-def time_set():
+def get_time():
     # 現在時刻を取得
     return datetime.datetime.now().strftime('%Y%m%d%H:%M')
-    # C設定から現在時刻を取得し、ファイル名用に日付を返す
+    # PC設定から現在時刻を取得し、ファイル名用に日付を返す
 
 
 def time_now():
@@ -106,6 +106,7 @@ if os.path.exists(FILENAME):
         # 1行ずつ配列へ代入
         lg = len(lines)
         # 配列の要素数を求める
+
     if lg < 1:
         # 中が空の場合は初期値を与える
         lastjkn = '99:99'
@@ -146,11 +147,14 @@ i = 0
 while i < 21:
 # 最大21回再試行
     try:
+    # エラーを検知
         list = json2list(data, dtime_d, dtime_t)
         # URLからjsonを取得。倉吉市のデータを取り出し、取得したjsonの必要な値をlistに格納
 
     except Exception:
+    # エラーが出た場合
         i += 1
+        # カウンターを+1
         if i >= 20:
             now = get_time()
             list = [dtime_d + ' ' + dtime_t, 'Error!>>' + now[8:], 'Missing data']
@@ -159,6 +163,9 @@ while i < 21:
         else:
             pass
             # 21回未満の場合は一度tryを抜けてループに戻る
+        
+        sleep(30)
+        # 30秒後に再試行
 
     else:
         break
